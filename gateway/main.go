@@ -1,10 +1,14 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"time"
+
+	"github.com/jackc/pgx/v5"
 )
 
 var gwAppName, gwBindPort, gwPriority, gwThreads string
@@ -33,6 +37,16 @@ func main() {
 	fmt.Println("GATEWAY_BIND_PORT:", gwBindPort)
 	fmt.Println("GATEWAY_PRIORITY:", gwPriority)
 	fmt.Println("GATEWAY_THREADS:", gwThreads)
+
+	pgCtx, pgCancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer pgCancel()
+
+	pgConn, err := pgx.Connect(pgCtx, "postgres://user:pass@localhost:5432/demodb")
+	if err != nil {
+		fmt.Println("database connect error:", err)
+	}
+
+	_ = pgConn
 
 	http.HandleFunc("/", rootHandler)
 
