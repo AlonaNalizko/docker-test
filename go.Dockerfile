@@ -18,6 +18,6 @@ FROM alpine:3.22
 
 WORKDIR /app
 
-COPY --from=builder gateway .
+COPY --from=builder /app/gateway .
 
 CMD ["/app/main.go"]
