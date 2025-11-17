@@ -22,4 +22,4 @@ COPY --from=builder /app/gateway .
 
 EXPOSE 5000
 
-CMD ["/app/main.go"]
+CMD ["/app/gateway"]
